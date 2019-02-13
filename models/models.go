@@ -1,10 +1,14 @@
 package models
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"github.com/jinzhu/gorm"
+)
 
 //Product model will be used as product table
 type Product struct {
-	ID                 uint
+	gorm.Model
 	ProductName        string `gorm:"type:varchar(100);not null"`
 	ProductDescription string `gorm:"type:varchar(255);not null"`
 	QuantityPerUnit    float32
@@ -20,14 +24,14 @@ type Product struct {
 	ProductAvailable   string
 	SellerID           uint
 	Ranking            []*Ranking
-	ProductImage       []*ProductImage
+	ProductImage       *ProductImage
 	Order              []*Order    `gorm:"many2many:product_order;"`
 	Category           []*Category `gorm:"many2many:product_category;"`
 }
 
 //Order model will be used as order table
 type Order struct {
-	ID         uint
+	gorm.Model
 	UserID     uint
 	Address    string
 	Product    []*Product `gorm:"many2many:product_order;"`
@@ -37,7 +41,7 @@ type Order struct {
 
 //Distance model will be used as Distance table
 type Distance struct {
-	ID      uint
+	gorm.Model
 	LongOne float64
 	LatOne  float64
 	LongTwo float64
@@ -47,14 +51,14 @@ type Distance struct {
 
 //Category model will be used as Category table
 type Category struct {
-	ID            uint
+	gorm.Model
 	CategoryTitle string     `gorm:"type:varchar(100);not null"`
 	Product       []*Product `gorm:"many2many:product_category;"`
 }
 
 //Shipper model will be used as shiper table
 type Shipper struct {
-	ID           uint
+	gorm.Model
 	FirstName    string `gorm:"type:varchar(100);not null"`
 	LastName     string `gorm:"type:varchar(100);not null"`
 	Phone        string `gorm:"type:varchar(100);unique;not null"`
@@ -67,7 +71,7 @@ type Shipper struct {
 
 //OrderDetails model will be used as orderdetails table
 type OrderDetails struct {
-	ID           uint
+	gorm.Model
 	IsDeliverded sql.NullBool
 	Order        *Order
 	OrderID      uint
@@ -75,7 +79,7 @@ type OrderDetails struct {
 
 //Seller model will be used as seller table
 type Seller struct {
-	ID            uint
+	gorm.Model
 	CompanyName   string `gorm:"type:varchar(100);unique;not null"`
 	Address1      string
 	Address2      string
@@ -94,13 +98,13 @@ type Seller struct {
 
 //Ranking model will be used as ranking table
 type Ranking struct {
-	ID        uint
+	gorm.Model
 	ProductID uint
 }
 
 //User model will be used as user table
 type User struct {
-	ID       uint
+	gorm.Model
 	UserName string
 	email    string `gorm:"type:varchar(100);unique;not null"`
 	password string `gorm:"not null"`
@@ -108,7 +112,7 @@ type User struct {
 
 //ProductImage model will be used as productimage table
 type ProductImage struct {
-	ID         uint
+	gorm.Model
 	ImageOne   sql.NullString
 	ImageTwo   sql.NullString
 	ImageThree sql.NullString
