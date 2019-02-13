@@ -5,8 +5,10 @@ import (
 	"github.com/waragrammers/Goblue/dbdriver"
 )
 
-func main() {
-
+func init() {
 	dbdriver.PostgresDb()
+}
+
+func main() {
 
 }
