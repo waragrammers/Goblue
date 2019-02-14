@@ -25,8 +25,8 @@ type Product struct {
 	SellerID           uint
 	Ranking            []*Ranking
 	ProductImage       *ProductImage
-	Order              []*Order    `gorm:"many2many:product_order;"`
-	Category           []*Category `gorm:"many2many:product_category;"`
+	Order              []*Order `gorm:"many2many:product_order;"`
+	CategoryID         uint
 }
 
 //Order model will be used as order table
@@ -37,6 +37,14 @@ type Order struct {
 	Product    []*Product `gorm:"many2many:product_order;"`
 	DistanceID uint
 	ShipperID  uint
+}
+
+//OrderDetails model will be used as orderdetails table
+type OrderDetails struct {
+	gorm.Model
+	IsDeliverded sql.NullBool
+	Order        *Order
+	OrderID      uint
 }
 
 //Distance model will be used as Distance table
@@ -52,8 +60,8 @@ type Distance struct {
 //Category model will be used as Category table
 type Category struct {
 	gorm.Model
-	CategoryTitle string     `gorm:"type:varchar(100);not null"`
-	Product       []*Product `gorm:"many2many:product_category;"`
+	CategoryTitle string `gorm:"type:varchar(100);not null"`
+	Product       []*Product
 }
 
 //Shipper model will be used as shiper table
@@ -67,14 +75,6 @@ type Shipper struct {
 	Order        []*Order
 	User         User
 	UserID       uint
-}
-
-//OrderDetails model will be used as orderdetails table
-type OrderDetails struct {
-	gorm.Model
-	IsDeliverded sql.NullBool
-	Order        *Order
-	OrderID      uint
 }
 
 //Seller model will be used as seller table
@@ -106,8 +106,9 @@ type Ranking struct {
 type User struct {
 	gorm.Model
 	UserName string
-	email    string `gorm:"type:varchar(100);unique;not null"`
-	password string `gorm:"not null"`
+	email    string  `gorm:"type:varchar(100);unique;not null"`
+	password string  `gorm:"not null"`
+	Role     []*Role `gorm:"many2many:user_role;"`
 }
 
 //ProductImage model will be used as productimage table
@@ -117,4 +118,10 @@ type ProductImage struct {
 	ImageTwo   sql.NullString
 	ImageThree sql.NullString
 	ProductID  uint
+}
+
+type Role struct {
+	gorm.Model
+	RoleName string
+	User     []*User `gorm:"many2many:user_role;"`
 }
