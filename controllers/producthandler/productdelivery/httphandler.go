@@ -1,4 +1,4 @@
-package delivery
+package productdelivery
 
 import (
 	"net/http"
@@ -16,11 +16,12 @@ type HTTPHandler struct {
 //NewProductHTTPHandler will be helping us to initiate new one
 func NewProductHTTPHandler(route *echo.Echo) {
 	handleFunc := &HTTPHandler{repository.ProductRepo{}}
-	route.Use(middleware.Logger())
-	route.GET("/allproducts", handleFunc.fechAll)
-	route.POST("/create", handleFunc.CreateProduct)
-	route.PUT("/update/:idpro", handleFunc.Update)
-	route.DELETE("/delete/:idpro", handleFunc.Delete)
+	product := route.Group("/product")
+	product.Use(middleware.Logger())
+	product.GET("/all", handleFunc.fechAll)
+	product.POST("/create", handleFunc.CreateProduct)
+	product.PUT("/update/:idpro", handleFunc.Update)
+	product.DELETE("/delete/:idpro", handleFunc.Delete)
 }
 
 func (hndl *HTTPHandler) fechAll(c echo.Context) error {

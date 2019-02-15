@@ -37,3 +37,10 @@ func (db *UserRepo) UpdateUser(id int) (string, error) {
 	message := "Updated"
 	return message, nil
 }
+
+//DeleteUser method for deleting user in db
+func (db *UserRepo) DeleteUser(id int) (string, error) {
+	mesage := "Delete user method"
+
+	return mesage, nil
+}
