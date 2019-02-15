@@ -10,4 +10,5 @@ type UserRepostory interface {
 	GetAllUser() ([]*models.User, error)
 	GetuserByID(id int) (*models.User, error)
 	UpdateUser(id int) (string, error)
+	DeleteUser(id int) (string, error)
 }
