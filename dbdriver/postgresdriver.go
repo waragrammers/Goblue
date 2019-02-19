@@ -17,7 +17,8 @@ func PostgresDb() *gorm.DB {
 	db.AutoMigrate(
 		&models.Product{},
 		&models.Category{},
-		&models.Distance{},
+		&models.LocationAdress{},
+		&models.ShipperOder{},
 		&models.Order{},
 		&models.OrderDetails{},
 		&models.ProductImage{},

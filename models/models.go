@@ -32,11 +32,10 @@ type Product struct {
 //Order model will be used as order table
 type Order struct {
 	gorm.Model
-	UserID     uint
-	Address    string
-	Product    []*Product `gorm:"many2many:product_order;"`
-	DistanceID uint
-	ShipperID  uint
+	UserID         uint
+	Address        string
+	Product        []*Product `gorm:"many2many:product_order;"`
+	LocationAdress []*LocationAdress
 }
 
 //OrderDetails model will be used as orderdetails table
@@ -47,14 +46,24 @@ type OrderDetails struct {
 	OrderID      uint
 }
 
-//Distance model will be used as Distance table
-type Distance struct {
+//ShipperOder model will be used as ShipperOder table
+type ShipperOder struct {
 	gorm.Model
-	LongOne float64
-	LatOne  float64
-	LongTwo float64
-	LatTwo  float64
-	Order   []*Order
+	ShipperID uint
+	Order     *Order
+}
+
+//LocationAdress  model will be used as LocationAdress  table
+type LocationAdress struct {
+	gorm.Model
+	OrderID      uint
+	FullName     string `gorm:"type:varchar(100);not null"`
+	AddressLine1 string
+	AddressLine2 string
+	City         string
+	Province     string
+	Country      string
+	PhoneNumber  string `gorm:"type:varchar(100);not null"`
 }
 
 //Category model will be used as Category table
@@ -72,9 +81,9 @@ type Shipper struct {
 	Phone        string `gorm:"type:varchar(100);unique;not null"`
 	email        string `gorm:"type:varchar(100);unique;not null"`
 	ProfileImage string
-	Order        []*Order
 	User         User
 	UserID       uint
+	ShipperOder  []*ShipperOder
 }
 
 //Seller model will be used as seller table
@@ -105,10 +114,14 @@ type Ranking struct {
 //User model will be used as user table
 type User struct {
 	gorm.Model
-	UserName string
-	email    string  `gorm:"type:varchar(100);unique;not null"`
-	password string  `gorm:"not null"`
-	Role     []*Role `gorm:"many2many:user_role;"`
+	FirstName   string `gorm:"type:varchar(100);unique;not null"`
+	LastName    string `gorm:"type:varchar(100);unique;not null"`
+	PhoneNumber string `gorm:"type:varchar(100);unique;not null"`
+	email       string `gorm:"type:varchar(100);unique;not null"`
+	password    string `gorm:"not null"`
+
+	Role  []*Role `gorm:"many2many:user_role;"`
+	Order []*Order
 }
 
 //ProductImage model will be used as productimage table
@@ -120,6 +133,7 @@ type ProductImage struct {
 	ProductID  uint
 }
 
+//Role model will be used as Role table
 type Role struct {
 	gorm.Model
 	RoleName string
