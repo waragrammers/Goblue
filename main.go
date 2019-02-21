@@ -3,12 +3,16 @@ package main
 import (
 	"github.com/labstack/echo"
 	_ "github.com/lib/pq"
+	"github.com/waragrammers/Goblue/controllers/categoryhandler/categorydelivery"
+	"github.com/waragrammers/Goblue/controllers/categoryhandler/categoryrepo"
 	"github.com/waragrammers/Goblue/controllers/locationhandler/httpdelivery"
 	"github.com/waragrammers/Goblue/controllers/locationhandler/locationrepo"
 	"github.com/waragrammers/Goblue/controllers/orderhandler/oderrepo"
 	"github.com/waragrammers/Goblue/controllers/orderhandler/orderdeliverly"
 	"github.com/waragrammers/Goblue/controllers/producthandler/productdelivery"
 	"github.com/waragrammers/Goblue/controllers/producthandler/repository"
+	"github.com/waragrammers/Goblue/controllers/sellerhandler/sellerhttpdelivery"
+	"github.com/waragrammers/Goblue/controllers/sellerhandler/sellerrepo"
 	"github.com/waragrammers/Goblue/controllers/shipperorderhandler/httpdeliverly"
 	"github.com/waragrammers/Goblue/controllers/shipperorderhandler/shipperorderrepo"
 	"github.com/waragrammers/Goblue/controllers/userhandler/userdelivery"
@@ -38,5 +42,14 @@ func main() {
 	//Location handler
 	locationrepo.NewLocationRepo(DbConnection)
 	httpdelivery.NewOrderHTTPhandler(echoRoute)
+
+	//category
+	categoryrepo.NewCategoryrepo(DbConnection)
+	categorydelivery.NewCategoryHTTPhandler(echoRoute)
+
+	//seller handler
+	sellerrepo.NewSellerRepo(DbConnection)
+	sellerhttpdelivery.NewSellerHTTPhandler(echoRoute)
+
 	echoRoute.Start(":3000")
 }
